@@ -1,23 +1,17 @@
-"use client";
-
-import "@rainbow-me/rainbowkit/styles.css";
-import { darkTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider } from "wagmi";
-import { config } from "@/lib/wagmi";
+import type { Metadata } from "next";
 import "./globals.css";
+import Providers from "./providers";
 
-const queryClient = new QueryClient();
+export const metadata: Metadata = {
+  title: "DEX One",
+  description: "A DEX dApp built with Solidity and modern Web3 tooling, enabling trustless ERC-20 token swaps.",
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <WagmiProvider config={config}>
-          <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider theme={darkTheme()}>{children}</RainbowKitProvider>
-          </QueryClientProvider>
-        </WagmiProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

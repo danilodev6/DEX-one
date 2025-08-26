@@ -11,7 +11,7 @@ export default function HomePage() {
         <div className="text-center space-y-8">
           <h1 className="text-6xl font-bold text-gray-900 dark:text-white">
             Trade with
-            <span className="text-purple-600"> Zero Slippage</span>
+            <span className="text-blue-400"> Zero Slippage</span>
           </h1>
 
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
@@ -21,13 +21,13 @@ export default function HomePage() {
           <div className="flex gap-4 justify-center">
             <Link
               href="/swap"
-              className="bg-purple-600 hover:bg-purple-800 text-white px-8 py-4 rounded-lg font-semibold flex items-center gap-2 transition-colors"
+              className="bg-blue-400 hover:bg-blue-500 text-white px-8 py-4 rounded-lg font-semibold flex items-center gap-2 transition-colors"
             >
               Start Trading <ArrowRight className="h-5 w-5" />
             </Link>
             <Link
               href="/liquidity"
-              className="border border-purple-600 text-purple-500 hover:bg-purple-50 hover:border-purple-50 px-8 py-4 rounded-lg font-semibold transition-colors"
+              className="border border-blue-300 text-blue-400 hover:bg-blue-50 hover:border-blue-50 px-8 py-4 rounded-lg font-semibold transition-colors"
             >
               Add Liquidity
             </Link>
@@ -46,7 +46,7 @@ export default function HomePage() {
             description="Battle-tested contracts with comprehensive security measures"
           />
           <FeatureCard
-            icon={<TrendingUp className="h-12 w-12 text-blue-600" />}
+            icon={<TrendingUp className="h-12 w-12 text-purple-600" />}
             title="Earn Rewards"
             description="Provide liquidity and earn trading fees from every swap"
           />
