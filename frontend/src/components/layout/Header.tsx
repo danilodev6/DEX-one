@@ -10,7 +10,9 @@ export function Header() {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Activity className="h-8 w-8 text-blue-300" />
-          <h1 className="text-3xl font-bold">DEX One</h1>
+          <Link href="/" className="text-3xl font-bold">
+            <h1>DEX One</h1>
+          </Link>
         </div>
 
         <nav className="hidden md:flex md:text-lg items-center space-x-18">

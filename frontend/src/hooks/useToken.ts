@@ -31,7 +31,6 @@ export function useToken(tokenAddress: Address, spender?: Address) {
     abi: ERC20_ABI,
     functionName: "symbol",
   });
-
   const { data: decimals } = useReadContract({
     address: tokenAddress,
     abi: ERC20_ABI,
