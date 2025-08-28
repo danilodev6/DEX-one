@@ -63,6 +63,4 @@ The goal of this project is to highlight strong fundamentals in smart contract d
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/dex-dapp.git
-   cd dex-dapp
-   bun install
-   bun dev
+   cd dex-dapp```
