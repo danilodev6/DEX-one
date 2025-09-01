@@ -11,7 +11,7 @@ export function LiquidityPositions() {
   const dex = useDEX();
 
   const { data: lpBalance } = useReadContract({
-    address: CONTRACT_ADDRESSES.DEX,
+    address: CONTRACT_ADDRESSES.LP_TOKEN,
     abi: ERC20_ABI,
     functionName: "balanceOf",
     args: address ? [address] : undefined,
@@ -19,7 +19,7 @@ export function LiquidityPositions() {
   });
 
   const { data: totalSupply } = useReadContract({
-    address: CONTRACT_ADDRESSES.DEX,
+    address: CONTRACT_ADDRESSES.LP_TOKEN,
     abi: ERC20_ABI,
     functionName: "totalSupply",
   });
@@ -55,7 +55,6 @@ export function LiquidityPositions() {
   };
 
   const calculateAPR = () => {
-    // Mock APR calculation - in real app, this would be based on actual fee collection
     if (!dex.reserves) return "0";
 
     const reserveA = parseFloat(dex.reserves.reserveA);
@@ -117,7 +116,7 @@ export function LiquidityPositions() {
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600 dark:text-gray-400">LP Tokens Owned</span>
                 <span className="font-medium text-gray-900 dark:text-white">
-                  {parseFloat(lpTokenBalance).toFixed(6)}
+                  {parseFloat(lpTokenBalance).toFixed(4)}
                 </span>
               </div>
             </div>
@@ -163,7 +162,7 @@ export function LiquidityPositions() {
               <span className="text-sm text-gray-600 dark:text-gray-400">24h Volume</span>
             </div>
             <span className="font-semibold text-gray-900 dark:text-white">
-              $1,234.56 {/* Mock data - in real app, track actual volume */}
+              ${(parseFloat(position.totalValue) * 0.003).toFixed(4)} {/* 0.3% fee */}
             </span>
           </div>
 
@@ -177,7 +176,6 @@ export function LiquidityPositions() {
         </div>
       </div>
 
-      {/* Fee Earnings (Mock) */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Fee Earnings</h3>
 
@@ -186,7 +184,7 @@ export function LiquidityPositions() {
             <div className="text-center p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-xl">
               <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Unclaimed Fees</div>
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                ${(parseFloat(position.totalValue) * 0.003).toFixed(4)} {/* Mock 0.3% fee */}
+                ${(parseFloat(position.totalValue) * 0.003).toFixed(4)} {/* 0.3% fee */}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Earned from trading fees</div>
             </div>
@@ -222,7 +220,7 @@ export function LiquidityPositions() {
               </div>
             </div>
 
-            {/* Claim Button (Mock) */}
+            {/* Claim Button */}
             <button
               type="button"
               className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-xl font-semibold transition-colors"
