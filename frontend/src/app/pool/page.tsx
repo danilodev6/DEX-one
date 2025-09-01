@@ -5,8 +5,11 @@ import { VolumeChart } from "@/components/charts/VolumeChart";
 import { Header } from "@/components/layout/Header";
 import { PoolOverview } from "@/components/pool/PoolOverview";
 import { RecentTransactions } from "@/components/pool/RecentTransactions";
+import { useSubgraphData } from "@/hooks/useSubgraph";
 
 export default function PoolPage() {
+  const { chartData } = useSubgraphData();
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
@@ -16,8 +19,8 @@ export default function PoolPage() {
           <PoolOverview />
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-            <LiquidityChart />
-            <VolumeChart />
+            <LiquidityChart data={chartData.liquidity} />
+            <VolumeChart data={chartData.volume} />
           </div>
 
           <RecentTransactions />
