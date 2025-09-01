@@ -11,39 +11,47 @@ export function AddLiquidity() {
   const [amountA, setAmountA] = useState("");
   const [amountB, setAmountB] = useState("");
   const [isBalanced, setIsBalanced] = useState(true);
+  const [lastEditedField, setLastEditedField] = useState<"A" | "B" | null>(null);
   const balancedCheckboxId = useId();
 
   const dex = useDEX();
   const tokenA = useToken(CONTRACT_ADDRESSES.TOKEN_A, CONTRACT_ADDRESSES.DEX);
   const tokenB = useToken(CONTRACT_ADDRESSES.TOKEN_B, CONTRACT_ADDRESSES.DEX);
 
-  // Auto-calculate proportional amounts based on pool ratio
+  // Calculate proportional amounts based on pool ratio
   useEffect(() => {
-    if (!dex.reserves || !amountA || !isBalanced) return;
+    if (!dex.reserves || !isBalanced || !lastEditedField) return;
 
     const reserveA = parseFloat(dex.reserves.reserveA);
     const reserveB = parseFloat(dex.reserves.reserveB);
 
-    if (reserveA > 0 && reserveB > 0) {
+    // Skip if pool is empty
+    if (reserveA === 0 || reserveB === 0) return;
+
+    if (lastEditedField === "A" && amountA) {
       const ratio = reserveB / reserveA;
-      const calculatedB = (parseFloat(amountA) * ratio).toString();
-      setAmountB(calculatedB);
-    }
-  }, [amountA, dex.reserves, isBalanced]);
-
-  // Auto-calculate proportional amounts when B changes
-  useEffect(() => {
-    if (!dex.reserves || !amountB || !isBalanced) return;
-
-    const reserveA = parseFloat(dex.reserves.reserveA);
-    const reserveB = parseFloat(dex.reserves.reserveB);
-
-    if (reserveA > 0 && reserveB > 0) {
+      const calculatedB = (parseFloat(amountA) * ratio).toFixed(2);
+      if (calculatedB !== amountB) {
+        setAmountB(calculatedB);
+      }
+    } else if (lastEditedField === "B" && amountB) {
       const ratio = reserveA / reserveB;
-      const calculatedA = (parseFloat(amountB) * ratio).toString();
-      setAmountA(calculatedA);
+      const calculatedA = (parseFloat(amountB) * ratio).toFixed(2);
+      if (calculatedA !== amountA) {
+        setAmountA(calculatedA);
+      }
     }
-  }, [amountB, dex.reserves, isBalanced]);
+  }, [amountA, amountB, dex.reserves, isBalanced, lastEditedField]);
+
+  const handleAmountAChange = (value: string) => {
+    setAmountA(value);
+    setLastEditedField("A");
+  };
+
+  const handleAmountBChange = (value: string) => {
+    setAmountB(value);
+    setLastEditedField("B");
+  };
 
   const handleAddLiquidity = async () => {
     if (!amountA || !amountB) return;
@@ -73,6 +81,7 @@ export function AddLiquidity() {
       if (dex.isConfirmed) {
         setAmountA("");
         setAmountB("");
+        setLastEditedField(null);
       }
     } catch (error) {
       console.error("Add liquidity failed:", error);
@@ -117,7 +126,7 @@ export function AddLiquidity() {
         <TokenInput
           label="Token A Amount"
           value={amountA}
-          onChange={setAmountA}
+          onChange={handleAmountAChange}
           token="TKA"
           balance={tokenA.balance}
           address={CONTRACT_ADDRESSES.TOKEN_A}
@@ -132,7 +141,7 @@ export function AddLiquidity() {
         <TokenInput
           label="Token B Amount"
           value={amountB}
-          onChange={setAmountB}
+          onChange={handleAmountBChange}
           token="TKB"
           balance={tokenB.balance}
           address={CONTRACT_ADDRESSES.TOKEN_B}

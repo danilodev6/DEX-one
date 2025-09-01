@@ -18,24 +18,21 @@ export function RemoveLiquidity() {
 
   // Get LP token balance
   const { data: lpBalance } = useReadContract({
-    address: CONTRACT_ADDRESSES.DEX,
+    address: CONTRACT_ADDRESSES.LP_TOKEN,
     abi: ERC20_ABI,
     functionName: "balanceOf",
     args: address ? [address] : undefined,
-    query: {
-      enabled: !!address,
-    },
+    query: { enabled: !!address },
   });
 
-  // Get total LP supply
   const { data: totalSupply } = useReadContract({
-    address: CONTRACT_ADDRESSES.DEX,
+    address: CONTRACT_ADDRESSES.LP_TOKEN,
     abi: ERC20_ABI,
     functionName: "totalSupply",
   });
 
-  const lpTokenBalance = lpBalance ? formatEther(lpBalance) : "0";
-  const totalLpSupply = totalSupply ? formatEther(totalSupply) : "0";
+  const lpTokenBalance = lpBalance ? formatEther(BigInt(lpBalance.toString() || "0")) : "0";
+  const totalLpSupply = totalSupply ? formatEther(BigInt(totalSupply.toString() || "0")) : "0";
 
   const calculateRemovalAmounts = () => {
     if (!dex.reserves || !lpBalance || !totalSupply) {

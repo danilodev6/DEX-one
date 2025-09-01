@@ -72,12 +72,13 @@ export function useDEX() {
     error,
 
     // Data
-    reserves: reserves
-      ? {
-          reserveA: formatEther(reserves[0]),
-          reserveB: formatEther(reserves[1]),
-        }
-      : null,
+    reserves:
+      reserves && Array.isArray(reserves) && reserves.length === 2
+        ? {
+            reserveA: formatEther(reserves[0]),
+            reserveB: formatEther(reserves[1]),
+          }
+        : null,
     refetchReserves,
   };
 }

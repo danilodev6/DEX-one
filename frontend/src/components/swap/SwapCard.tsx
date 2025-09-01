@@ -100,7 +100,7 @@ export function SwapCard() {
 
         <TokenInput
           label="To"
-          value={amountOut ? formatEther(amountOut) : "0"}
+          value={amountOut ? formatEther(BigInt(amountOut.toString() || "0")) : "0"}
           onChange={() => {
             console.log("Read only");
           }}

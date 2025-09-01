@@ -10,26 +10,22 @@ export function LiquidityPositions() {
   const { address } = useAccount();
   const dex = useDEX();
 
-  // Get LP token balance
   const { data: lpBalance } = useReadContract({
     address: CONTRACT_ADDRESSES.DEX,
     abi: ERC20_ABI,
     functionName: "balanceOf",
     args: address ? [address] : undefined,
-    query: {
-      enabled: !!address,
-    },
+    query: { enabled: !!address },
   });
 
-  // Get total LP supply
   const { data: totalSupply } = useReadContract({
     address: CONTRACT_ADDRESSES.DEX,
     abi: ERC20_ABI,
     functionName: "totalSupply",
   });
 
-  const lpTokenBalance = lpBalance ? formatEther(lpBalance) : "0";
-  const totalLpSupply = totalSupply ? formatEther(totalSupply) : "0";
+  const lpTokenBalance = lpBalance ? formatEther(BigInt(lpBalance.toString() || "0")) : "0";
+  const totalLpSupply = totalSupply ? formatEther(BigInt(totalSupply.toString() || "0")) : "0";
 
   const calculatePosition = () => {
     if (!dex.reserves || !lpBalance || !totalSupply || parseFloat(totalLpSupply) === 0) {
@@ -48,7 +44,6 @@ export function LiquidityPositions() {
     const tokenAAmount = (reserveA * shareOfPool) / 100;
     const tokenBAmount = (reserveB * shareOfPool) / 100;
 
-    // Assuming 1:1 USD value for simplicity - in real app, you'd get actual prices
     const totalValue = tokenAAmount + tokenBAmount;
 
     return {
